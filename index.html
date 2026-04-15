@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Anniversary ❤️</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        rose: {
+                            900: '#880808',
+                            800: '#9b1c1c',
+                            700: '#ae3232',
+                            600: '#c94a4a',
+                            500: '#db2777',
+                            400: '#ec4899',
+                            300: '#f472b6',
+                        }
+                    },
+                    fontFamily: {
+                        playfair: ['Playfair Display', 'serif'],
+                        inter: ['Inter', 'sans-serif'],
+                        cursive: ['Dancing Script', 'cursive'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #880808, #db2777) !important;
+            background-attachment: fixed !important;
+            min-height: 100vh;
+            color: white;
+        }
+        
+        .font-playfair {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .font-cursive {
+            font-family: 'Dancing Script', cursive;
+        }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+        
+        .glass-light {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .parchment {
+            background: linear-gradient(135deg, #fdf6e3 0%, #f5e6c8 50%, #e8d5a3 100%);
+            color: #2d1f1a;
+            box-shadow: 
+                0 4px 6px rgba(0, 0, 0, 0.1),
+                inset 0 0 60px rgba(139, 90, 43, 0.05);
+        }
+        
+        .hearts-bg {
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(219, 39, 119, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(219, 39, 119, 0.1) 0%, transparent 40%);
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% { 
+                transform: scale(1);
+                filter: brightness(1) drop-shadow(0 0 10px rgba(219, 39, 119, 0.5));
+            }
+            50% { 
+                transform: scale(1.1);
+                filter: brightness(1.2) drop-shadow(0 0 25px rgba(219, 39, 119, 0.8));
+            }
+        }
+        
+        @keyframes fade-up {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .animate-pulse-glow {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+        
+        .animate-fade-up {
+            animation: fade-up 0.8s ease-out forwards;
+        }
+        
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, transparent, rgba(255,255,255,0.6) 10%, rgba(255,255,255,0.6) 90%, transparent);
+            transform: translateX(-50%);
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 16px;
+            height: 16px;
+            background: white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 20px rgba(255,255,255,0.6);
+        }
+        
+        .animate-delay-100 { animation-delay: 0.1s; }
+        .animate-delay-200 { animation-delay: 0.2s; }
+        .animate-delay-300 { animation-delay: 0.3s; }
+        .animate-delay-400 { animation-delay: 0.4s; }
+        .animate-delay-500 { animation-delay: 0.5s; }
+        
+        .image-frame {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .image-frame::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: inherit;
+            pointer-events: none;
+        }
+        
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .music-player {
+            transition: all 0.3s ease;
+        }
+        
+        .music-player:hover {
+            transform: scale(1.05);
+        }
+        
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.3);
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255,255,255,0.5);
+        }
+    </style>
+</head>
+<body class="hearts-bg">
+    <!-- Hero Section -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <!-- Animated background elements -->
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-rose-500/20 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-rose-400/15 rounded-full blur-3xl"></div>
+        </div>
+        
+        <!-- Enter Screen -->
+        <div id="enter-screen" class="absolute inset-0 flex flex-col items-center justify-center z-10">
+            <div class="text-center">
+                <button onclick="enterSite()" class="group cursor-pointer">
+                    <div class="text-8xl mb-6 animate-pulse-glow">❤️</div>
+                    <p class="text-xl md:text-2xl font-light tracking-widest opacity-80 group-hover:opacity-100 transition-opacity">Click to Enter</p>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Main Hero Content (revealed after click) -->
+        <div id="main-hero" class="hidden absolute inset-0 flex flex-col items-center justify-center px-4 md:px-8">
+            <div class="max-w-5xl w-full">
+                <div class="glass rounded-2xl p-4 md:p-8">
+                    <img 
+                        src="WhatsApp Image 2026-04-15 at 6.11.45 PM.jpeg" 
+                        alt="Our Love Story"
+                        class="w-full h-48 md:h-80 lg:h-96 object-contain rounded-xl mb-6 md:mb-8"
+                    >
+                    <h1 class="font-playfair text-3xl md:text-5xl lg:text-6xl text-center font-bold">
+                        To My Sharon
+                    </h1>
+                    <p class="text-center mt-4 text-lg md:text-xl opacity-80">
+                        My everything
+                    </p>
+                </div>
+                <div class="text-center mt-12 animate-float">
+                    <p class="text-sm opacity-60">Scroll to explore our journey</p>
+                    <div class="text-2xl mt-2">↓</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section id="timeline" class="py-20 md:py-32 px-4 md:px-8">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="font-playfair text-3xl md:text-4xl lg:text-5xl text-center mb-16 md:mb-24 scroll-reveal">
+                Our Story
+            </h2>
+            
+            <div class="relative">
+                <div class="timeline-line hidden md:block"></div>
+                
+                <!-- Timeline Item 1 -->
+                <div class="timeline-item scroll-reveal mb-12 md:mb-20">
+                    <div class="md:w-1/2 md:pr-12 relative">
+                        <div class="timeline-dot hidden md:block"></div>
+                        <div class="glass rounded-2xl p-6 md:p-8">
+                            <div class="image-frame rounded-lg mb-4">
+                                <img 
+                                    src="WhatsApp Image 2026-04-e15 at 6.11.41 PM.jpeg" 
+                                    alt="First Date"
+                                    class="w-full h-32 md:h-40 object-contain rounded-lg"
+                                >
+                            </div>
+                            <p class="text-rose-300 text-sm mb-2">May 15, 2020</p>
+                            <h3 class="font-playfair text-xl md:text-2xl font-bold mb-3">First Date</h3>
+                            <p class="opacity-80 text-sm md:text-base leading-relaxed">
+                                The day our eyes met under the cherry blossoms. Your smile lit up the entire evening.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Timeline Item 2 -->
+                <div class="timeline-item scroll-reveal mb-12 md:mb-20">
+                    <div class="md:w-1/2 md:ml-auto md:pl-12 relative md:text-right">
+                        <div class="timeline-dot hidden md:block"></div>
+                        <div class="glass rounded-2xl p-6 md:p-8">
+                            <div class="image-frame rounded-lg mb-4">
+                                <img 
+                                    src="WhatsApp Image 2026-04-15 at 6.11.38 PM.jpeg" 
+                                    alt="First Trip"
+                                    class="w-full h-32 md:h-40 object-contain rounded-lg"
+                                >
+                            </div>
+                            <p class="text-rose-300 text-sm mb-2">August 22, 2021</p>
+                            <h3 class="font-playfair text-xl md:text-2xl font-bold mb-3">Our First Adventure</h3>
+                            <p class="opacity-80 text-sm md:text-base leading-relaxed">
+                                Exploring mountains together, hand in hand, dreaming of our future.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Timeline Item 3 -->
+                <div class="timeline-item scroll-reveal">
+                    <div class="md:w-1/2 md:pr-12 relative">
+                        <div class="timeline-dot hidden md:block"></div>
+                        <div class="glass rounded-2xl p-6 md:p-8">
+                            <div class="image-frame rounded-lg mb-4">
+                                <img 
+                                    src="WhatsApp Image 2026-04-15 at 6.11.318 PM.jpeg" 
+                                    alt="Special Moment"
+                                    class="w-full h-32 md:h-40 object-contain rounded-lg"
+                                >
+                            </div>
+                            <p class="text-rose-300 text-sm mb-2">December 24, 2022</p>
+                            <h3 class="font-playfair text-xl md:text-2xl font-bold mb-3">The Question</h3>
+                            <p class="opacity-80 text-sm md:text-base leading-relaxed">
+                                Under the Christmas lights, I asked you to be mine forever.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reasons Why Grid -->
+    <section id="reasons" class="py-20 md:py-32 px-4 md:px-8 bg-black/10">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="font-playfair text-3xl md:text-4xl lg:text-5xl text-center mb-12 md:mb-20 scroll-reveal">
+                Reasons Why I Love You
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                <!-- Card 1 -->
+                <div class="glass rounded-2xl p-6 md:p-8 text-center scroll-reveal">
+                    <div class="text-4xl md:text-5xl mb-4">❤️</div>
+                    <p class="text-lg md:text-xl">Your smile that brightens my darkest days</p>
+                </div>
+                
+                <!-- Card 2 -->
+                <div class="glass rounded-2xl p-6 md:p-8 text-center scroll-reveal">
+                    <div class="text-4xl md:text-5xl mb-4">❤️</div>
+                    <p class="text-lg md:text-xl">The way you make the perfect cup of tea</p>
+                </div>
+                
+                <!-- Card 3 -->
+                <div class="glass rounded-2xl p-6 md:p-8 text-center scroll-reveal">
+                    <div class="text-4xl md:text-5xl mb-4">❤️</div>
+                    <p class="text-lg md:text-xl">Your kindness that knows no bounds</p>
+                </div>
+                
+                <!-- Card 4 -->
+                <div class="glass rounded-2xl p-6 md:p-8 text-center scroll-reveal">
+                    <div class="text-4xl md:text-5xl mb-4">❤️</div>
+                    <p class="text-lg md:text-xl">How you dance when no one's watching</p>
+                </div>
+                
+                <!-- Card 5 -->
+                <div class="glass rounded-2xl p-6 md:p-8 text-center scroll-reveal">
+                    <div class="text-4xl md:text-5xl mb-4">❤️</div>
+                    <p class="text-lg md:text-xl">Your intelligence that inspires me</p>
+                </div>
+                
+                <!-- Card 6 -->
+                <div class="glass rounded-2xl p-6 md:p-8 text-center scroll-reveal">
+                    <div class="text-4xl md:text-5xl mb-4">❤️</div>
+                    <p class="text-lg md:text-xl">The warmth of your embrace</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Love Letter Section -->
+    <section id="letter" class="py-20 md:py-32 px-4 md:px-8">
+        <div class="max-w-3xl mx-auto">
+            <div class="parchment rounded-2xl p-8 md:p-12 lg:p-16 scroll-reveal">
+                <h2 class="font-playfair text-2xl md:text-3xl text-center mb-8 text-rose-900">
+                    A Letter to You
+                </h2>
+                
+                <div class="space-y-6 text-lg md:text-xl leading-relaxed text-rose-900/80">
+                    <p>My dearest love,</p>
+                    
+                    <p>
+                        From the moment our eyes met under those cherry blossoms, I knew my life would never be the same. There's something about you that makes every morning worth waking up for, every challenge worth facing, and every dream worth chasing.
+                    </p>
+                    
+                    <p>
+                        You are my rock when I'm shaken, my light when I'm lost, my home when I'm wandering. In your arms, I've found a peace I never knew existed. In your smile, I've found my reason to smile brighter.
+                    </p>
+                    
+                    <p>
+                        Thank you for choosing me, for loving me, for being exactly who you are. Every day with you is a gift I treasure deeply.
+                    </p>
+                    
+                    <p class="pt-8">
+                        Forever yours,
+                    </p>
+                    
+                    <p class="font-cursive text-3xl md:text-4xl text-rose-800">
+                        With all my heart
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 md:py-16 px-4 text-center glass-light">
+        <p class="font-playfair text-2xl md:text-3xl">Always & Forever</p>
+        <p class="mt-2 opacity-60">❤️ 2026 ❤️</p>
+    </footer>
+
+    <!-- Music Player -->
+    <div class="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50">
+        <div class="music-player glass rounded-full p-3 md:p-4 flex items-center gap-3 md:gap-4">
+            <button 
+                id="play-btn" 
+                onclick="toggleAudio()"
+                class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
+            >
+                <span id="play-icon" class="text-lg md:text-xl">▶</span>
+            </button>
+            <div class="hidden md:block w-24 lg:w-32">
+                <div class="h-1 bg-white/20 rounded-full overflow-hidden">
+                    <div id="progress" class="h-full bg-rose-400 rounded-full transition-all duration-300" style="width: 0%"></div>
+                </div>
+            </div>
+            <div class="hidden lg:block text-xs opacity-60">
+                <span id="time-current">0:00</span> / <span id="time-total">0:00</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Element -->
+    <audio id="audio-player" src="Maroon 5 - Memories (Lyrics).mp3" preload="metadata"></audio>
+
+    <script>
+        const enterScreen = document.getElementById('enter-screen');
+        const mainHero = document.getElementById('main-hero');
+        const audioPlayer = document.getElementById('audio-player');
+        const playBtn = document.getElementById('play-btn');
+        const playIcon = document.getElementById('play-icon');
+        const progressBar = document.getElementById('progress');
+        const timeCurrent = document.getElementById('time-current');
+        const timeTotal = document.getElementById('time-total');
+
+        let isPlaying = false;
+        let hasEntered = false;
+
+        function enterSite() {
+            if (hasEntered) return;
+            hasEntered = true;
+            
+            enterScreen.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+            enterScreen.style.opacity = '0';
+            enterScreen.style.transform = 'scale(1.1)';
+            
+            setTimeout(() => {
+                enterScreen.style.display = 'none';
+                mainHero.classList.remove('hidden');
+                mainHero.style.opacity = '0';
+                
+                setTimeout(() => {
+                    mainHero.style.transition = 'opacity 1s ease';
+                    mainHero.style.opacity = '1';
+                    
+                    // Start audio
+                    tryAudioAutoplay();
+                }, 100);
+            }, 800);
+        }
+
+        async function tryAudioAutoplay() {
+            try {
+                audioPlayer.volume = 0.3;
+                await audioPlayer.play();
+                isPlaying = true;
+                playIcon.textContent = '⏸';
+            } catch (e) {
+                console.log('Autoplay blocked, will play on user interaction');
+            }
+        }
+
+        function toggleAudio() {
+            if (isPlaying) {
+                audioPlayer.pause();
+                playIcon.textContent = '▶';
+            } else {
+                audioPlayer.play();
+                playIcon.textContent = '⏸';
+            }
+            isPlaying = !isPlaying;
+            updateProgress();
+        }
+
+        function updateProgress() {
+            if (audioPlayer.duration) {
+                const percent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+                progressBar.style.width = percent + '%';
+                
+                const currentMins = Math.floor(audioPlayer.currentTime / 60);
+                const currentSecs = Math.floor(audioPlayer.currentTime % 60);
+                timeCurrent.textContent = `${currentMins}:${currentSecs.toString().padStart(2, '0')}`;
+                
+                const totalMins = Math.floor(audioPlayer.duration / 60);
+                const totalSecs = Math.floor(audioPlayer.duration % 60);
+                timeTotal.textContent = `${totalMins}:${totalSecs.toString().padStart(2, '0')}`;
+            }
+        }
+
+        audioPlayer.addEventListener('timeupdate', updateProgress);
+        audioPlayer.addEventListener('ended', () => {
+            isPlaying = false;
+            playIcon.textContent = '▶';
+            progressBar.style.width = '0%';
+        });
+
+        // Scroll reveal observer
+        const scrollObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+            scrollObserver.observe(el);
+        });
+
+        // Add staggered animation delays
+        document.querySelectorAll('#reasons .glass').forEach((el, i) => {
+            el.style.transitionDelay = `${i * 0.1}s`;
+        });
+    </script>
+</body>
+</html>
